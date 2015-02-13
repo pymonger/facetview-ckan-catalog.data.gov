@@ -65,6 +65,16 @@ def index_group_datasets(ckan_url, es_url, index, group):
                       value = e['value']
                       if key == "_id": continue
 
+                      # handle extra tags and append to root tags
+                      if key == 'tags':
+                          if ' > ' in value:
+                              value = [i.strip() for i in value.split('>')]
+                          elif value.startswith('{'):
+                              value = value[1:-2].split(',')
+                          else:
+                              value = value.split(',')
+                          res['tags'].extend([{'name': v} for v in value])
+
                       # fix temporal extents
                       if key in TEMPORAL_EXT_FIELDS:
                           match = TEMPORAL_EXT_RE.search(value)
@@ -122,7 +132,7 @@ def index_group_datasets(ckan_url, es_url, index, group):
         print("Left to index: %d" % total)
         if total <= 0: break 
 
-    print("\n".join(datasets))
+    #print("\n".join(datasets))
 
 
 if __name__ == "__main__":

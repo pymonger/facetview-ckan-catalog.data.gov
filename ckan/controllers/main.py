@@ -18,13 +18,6 @@ def home():
                            current_year=datetime.now().year)
 
 
-@main.route('/ceos_gcmd')
-@cache.cached(timeout=1000)
-def home_ceos_gcmd():
-    return render_template('facetview-ceos_gcmd.html',
-                           title='CEOS-GCMD Instruments FacetView',
-                           current_year=datetime.now().year)
-
 
 @main.route("/login", methods=["GET", "POST"])
 def login():

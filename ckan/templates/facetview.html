@@ -144,31 +144,20 @@ jQuery(document).ready(function($) {
     search_url: "{{ url_for('.query') }}?",
     search_index: 'elasticsearch',
     facets: [
-        {'field':'_type', 'display': 'type'},
-        {'field':'attributes.raw', 'display': 'attributes'},
-        {'field':'contributors.organization.name.raw', 'display': 'organization'},
-        {'field':'platform_names.raw', 'display': 'platform'},
-        {'field':'instrument_names.raw', 'display': 'instrument'},
-        {'field':'chapter_identifier.raw', 'display': 'chapter ID'},
-        {'field':'href_metadata.chapter.number', 'display': 'chapter number'},
-        {'field':'title.raw', 'display': 'title'},
-        {'field':'create_dt', 'display': 'creation date', 'type': 'date'},
-        {'field':'report_id.raw', 'display': 'report id'}, 
-        {'field':'report_title.raw', 'display': 'report title'}, 
-        {'field':'contributor_full_name.raw', 'display': 'contributor'}, 
-        {'field':'identifier.raw', 'display': 'identifier'}
+        {'field':'tags.name.raw', 'display': 'tag'},
+        {'field':'organization.title.raw', 'display': 'organization'},
+        {'field':'resources.format.raw', 'display': 'resource format'},
+        {'field':'resources.name.raw', 'display': 'resource name'},
+        {'field':'license_title.raw', 'display': 'license'},
+        {'field':'metadata_modified', 'display': 'modified date', 'type': 'date'}
     ],
     time_fields: [
-        'create_dt',
+        'metadata_modified',
     ],
     location_field: 'facetview_location',
     json_fields: [
-        'href_metadata.files',
-        'files'
     ],
     filterchoice_result_fields: {
-        'contributor_full_name': 'contributor_full_name.raw',
-        'attributes': 'attributes.raw'
     },
     enable_rangeselect: true,
     enable_locationselect: true,
@@ -177,7 +166,7 @@ jQuery(document).ready(function($) {
       size: 10
     },
     pager_on_top: true,
-    sort: [{ 'identifier.raw': { "order": "asc"} }],
+    sort: [{ 'metadata_modified': { "order": "asc"} }],
     fields: [ '_timestamp', '_source'],
     display_images: false,
     pre_search_callback: function() {
@@ -201,7 +190,7 @@ jQuery(document).ready(function($) {
       [
         {
           "pre": " <strong>",
-          "field": "identifier",
+          "field": "title",
           "post": "</strong>"
         },
         {
@@ -219,28 +208,16 @@ jQuery(document).ready(function($) {
       ],
       [
         {
-          "pre": "<b>title:</b> <font color='blue'>",
-          "field": "title",
-          "post": "</font>"
-        }
-      ],
-      [
-        {
           "pre": "<table><tr><td><div id='img_grid_",
-          "field": "identifier",
+          "field": "id",
           "post": "'></div><script>$(function() {\n" +
                   "  var imgData = [];\n" +
                   "  var coords = [];\n"
         },
         {
-          "pre": "  imgData = ",
-          "field": "href_metadata.files",
-          "post": ";\n"
-        },
-        {
-          "pre": "  imgData = ",
-          "field": "files",
-          "post": ";\n"
+          "pre": "  imgData = [\"",
+          "field": "extras.graphic-preview-file",
+          "post": "\"];\n"
         },
         {
           "pre": "  coords = [",
@@ -249,14 +226,14 @@ jQuery(document).ready(function($) {
         },
         {
           "pre": "  var id='",
-          "field": "identifier",
+          "field": "id",
           "post": "';\n" +
                   "  if (imgData.length > 0 || coords.length > 0) {\n" +
                   "    var grid =  $('div[id=\"img_grid_' + id + '\"]');\n" +
                   "    grid.append('<table><tr>');\n" +
                   "    for (var i=0; i<imgData.length; i++) {\n" +
-                  "      var img_url = imgData[i].href;\n" +
-                  "      var small_img_url = imgData[i].href;\n" +
+                  "      var img_url = imgData[i];\n" +
+                  "      var small_img_url = imgData[i];\n" +
                   "      var tooltip = '';\n" +
                   "      if (typeof imgData[i].tooltip == 'string' || imgData[i].tooltip instanceof String) {\n" +
                   "        if (imgData[i].tooltip.length > 0) \n" +
@@ -275,7 +252,7 @@ jQuery(document).ready(function($) {
         },
         {
           "pre": "  var id='",
-          "field": "identifier",
+          "field": "id",
           "post": "';\n" +
                   "});<\/script>"
         }
@@ -283,13 +260,14 @@ jQuery(document).ready(function($) {
       [
         {
           "pre": "<script>$(function() { var id = '",
-          "field": "identifier",
+          "field": "id",
           "post": "';\n"
         },
         {
           "pre": "  var map = L.map('map_' + id," +
                  " {worldCopyJump: true, center: [0,0], zoom: 0, zoomControl: false});\n" +
-                 "L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {\n" +
+                 "L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {\n" +
+                 "  subdomains: '1234',\n" +
                  "  maxZoom: 18\n" +
                  "}).addTo(map);\n" +
                  "var coords = [",
@@ -369,7 +347,7 @@ jQuery(document).ready(function($) {
         },
         {
           "pre": "var id = '",
-          "field": "identifier",
+          "field": "id",
           "post": "';\n" +
                   "});\n" +
                   "<\/script>"
@@ -377,64 +355,29 @@ jQuery(document).ready(function($) {
       ],
       [
         {
-          "pre": "<b>contributors:</b> <font color='blue'>",
-          "field": "contributor_full_name",
+          "pre": "<b>organization:</b> <font color='blue'>",
+          "field": "organization.title",
           "post": "</font>"
         }
       ],
       [
         {
-          "pre": "<b>description:</b><br/>",
-          "field": "description",
+          "pre": "<b>notes:</b><br/>",
+          "field": "notes",
           "post": ""
         }
       ],
       [
         {
-          "pre": "<b>platforms:</b><br/>",
-          "field": "platform_names",
+          "pre": "<b>resource name:</b><br/>",
+          "field": "resources.name",
           "post": ""
         }
       ],
       [
         {
-          "pre": "<b>instruments:</b><br/>",
-          "field": "instrument_names",
-          "post": ""
-        }
-      ],
-      [
-        {
-          "pre": "<b>attributes:</b><br/>",
-          "field": "attributes",
-          "post": ""
-        }
-      ],
-      [
-        {
-          "pre": "<b>caption:</b><br/>",
-          "field": "caption",
-          "post": ""
-        }
-      ],
-      [
-        {
-          "pre": "<b>statement:</b><br/>",
-          "field": "statement",
-          "post": ""
-        }
-      ],
-      [
-        {
-          "pre": "<b>html:</b><br/>http://data.globalchange.gov",
-          "field": "uri",
-          "post": ""
-        }
-      ],
-      [
-        {
-          "pre": "<b>json:</b><br/>",
-          "field": "href",
+          "pre": "<b>resource urls:</b><br/>",
+          "field": "resources.url",
           "post": ""
         }
       ]

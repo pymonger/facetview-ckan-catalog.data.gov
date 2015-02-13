@@ -1547,7 +1547,9 @@ search box - the end user will not know they are happening.
         var initialize_search_map = function() {
             // initialize map
             var map = L.map('location_search_map', {worldCopyJump: true}).setView([0,0], 1);
-            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            //L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+                subdomains: '1234',
                 maxZoom: 18
             }).addTo(map);
         

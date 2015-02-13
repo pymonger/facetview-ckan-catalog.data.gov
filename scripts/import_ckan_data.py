@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 import os, sys, json, requests, types, re
+import requests_cache
 from pyes import ES
 
 from ckan import create_app
+
+
+requests_cache.install_cache('ckan-import')
 
 
 TEMPORAL_EXT_RE = re.compile(r'^(\d{4}-\d{2}-\d{2}T\d{2})(\d{2})(\d{2})$')
@@ -57,17 +61,19 @@ def index_group_datasets(ckan_url, es_url, index, group):
                   # fix extras
                   extras_fixed = {}
                   for e in res['extras']:
-                      if e['key'] == "_id": continue
+                      key = e['key']
+                      value = e['value']
+                      if key == "_id": continue
 
                       # fix temporal extents
-                      if e['key'] in TEMPORAL_EXT_FIELDS:
-                          match = TEMPORAL_EXT_RE.search(e['value'])
+                      if key in TEMPORAL_EXT_FIELDS:
+                          match = TEMPORAL_EXT_RE.search(value)
                           if match:
-                              e['value'] = "%s:%s:%s" % match.groups()
+                              value = "%s:%s:%s" % match.groups()
                           else: continue
 
                       # add
-                      extras_fixed[e['key']] = e['value']
+                      extras_fixed[key] = value
                   res['extras'] = extras_fixed
 
                   # add GeoJSON if defined (for now only bbox)

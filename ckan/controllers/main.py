@@ -60,7 +60,7 @@ def query():
 
     # query
     es_url = current_app.config['ELASTICSEARCH_URL']
-    es_index = current_app.config['CKAN_ELASTICSEARCH_INDEX']
+    es_index = current_app.config['MERGED_ELASTICSEARCH_INDEX']
     #current_app.logger.debug("ES query for query(): %s" % json.dumps(json.loads(source), indent=2))
     r = requests.post('%s/%s/_search' % (es_url, es_index), data=source.encode('utf-8'))
     result = r.json()

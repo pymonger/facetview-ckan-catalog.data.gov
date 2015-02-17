@@ -35,7 +35,7 @@ def index_datasets(echo_url, es_url, index):
         results = r.json()
         if len(results['feed']['entry']) == 0: break 
         for res in results['feed']['entry']:
-            locations = []
+            location = None
             if 'boxes' in res:
                 for box in res['boxes']:
                     # add GeoJSON if defined (for now only bbox)
@@ -53,7 +53,7 @@ def index_datasets(echo_url, es_url, index):
                     elif lon_max > 180.: lon_max -= 360.
                     if lat_min == -90.: lat_min = -89.9
                     if lat_max == 90.: lat_max = 89.9
-                    locations.append({
+                    location = {
                         "type": "polygon",
                         "coordinates": [[
                             [ lon_min, lat_min ],
@@ -62,17 +62,19 @@ def index_datasets(echo_url, es_url, index):
                             [ lon_max, lat_min ],
                             [ lon_min, lat_min ]
                         ]]
-                    })
+                    }
+                    break
             elif 'points' in res:
                 for point in res['points']:
                     lat, lon = point.split()
                     lat = float(lat)
                     lon = float(lon)
-                    locations.append({
+                    location = {
                         "type": "point",
                         "coordinates": [ lon, lat ]
-                    })
-            res['facetview_location'] = locations
+                    }
+                    break
+            res['facetview_location'] = location
           
             # index
             try: conn.index(res, index, 'echo', res['id'])

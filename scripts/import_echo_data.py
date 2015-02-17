@@ -75,6 +75,11 @@ def index_datasets(echo_url, es_url, index):
                     }
                     break
             res['facetview_location'] = location
+
+            # add extras to copy CKAN format
+            extras = {}
+            extras['identifier'] = res['id']
+            res['extras'] = extras
           
             # index
             try: conn.index(res, index, 'echo', res['id'])

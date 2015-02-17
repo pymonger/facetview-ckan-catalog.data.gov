@@ -12,7 +12,10 @@ class Config(object):
     ECHO_ELASTICSEARCH_INDEX = 'echo-stage'
 
     # merged alias
-    MERGED_ELASTICSEARCH_INDEX = 'merged-stage'
+    MERGED_ALIAS_ELASTICSEARCH_INDEX = 'merged-stage'
+
+    # merged index
+    MERGED_ELASTICSEARCH_INDEX = 'merged'
 
 
 class ProdConfig(Config):

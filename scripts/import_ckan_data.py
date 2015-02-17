@@ -118,7 +118,7 @@ def index_group_datasets(ckan_url, es_url, index, group):
                       }
           
                   # index
-                  try: conn.index(res, index, 'ckan', res['id'])
+                  try: conn.index(res, index, 'climate.data.gov', res['id'])
                   except Exception, e:
                       print("Got error: %s" % str(e))
                       errors[res['id']] = res
@@ -140,6 +140,6 @@ if __name__ == "__main__":
     app = create_app('ckan.settings.%sConfig' % env.capitalize(), env=env)
     es_url = app.config['ELASTICSEARCH_URL']
     ckan_url =  app.config['CKAN_REST_URL']
-    index = app.config['CKAN_ELASTICSEARCH_INDEX']
+    index = app.config['MERGED_ELASTICSEARCH_INDEX']
 
     index_group_datasets(ckan_url, es_url, index, 'climate5434')

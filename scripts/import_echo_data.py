@@ -100,6 +100,6 @@ if __name__ == "__main__":
     app = create_app('ckan.settings.%sConfig' % env.capitalize(), env=env)
     es_url = app.config['ELASTICSEARCH_URL']
     echo_url =  app.config['ECHO_REST_URL']
-    index = app.config['ECHO_ELASTICSEARCH_INDEX']
+    index = app.config['MERGED_ELASTICSEARCH_INDEX']
 
     index_datasets(echo_url, es_url, index)

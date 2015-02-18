@@ -153,6 +153,9 @@ jQuery(document).ready(function($) {
         {'field':'resources.format.raw', 'display': 'resource format'},
         {'field':'resources.name.raw', 'display': 'resource name'},
         {'field':'license_title.raw', 'display': 'license'},
+        {'field':'archive_center.raw', 'display': 'archive center'},
+        {'field':'data_center.raw', 'display': 'data center'},
+        {'field':'processing_level_id.raw', 'display': 'processing level'},
         {'field':'metadata_modified', 'display': 'modified date', 'type': 'date'}
     ],
     time_fields: [
@@ -165,7 +168,12 @@ jQuery(document).ready(function($) {
         'title': 'title.raw',
         'extras.theme': 'extras.theme.raw',
         'organization.title': 'organization.title.raw',
-        'extras.publisher': 'extras.publisher.raw'
+        'extras.publisher': 'extras.publisher.raw',
+        'archive_center': 'archive_center.raw',
+        'data_center': 'data_center.raw',
+        'short_name': 'short_name.raw',
+        'dataset_id': 'dataset_id.raw',
+        'processing_level_id': 'processing_level_id.raw'
     },
     enable_rangeselect: true,
     enable_locationselect: true,
@@ -410,6 +418,41 @@ jQuery(document).ready(function($) {
         {
           "pre": "<b>landing page:</b> <font color='blue'>",
           "field": "extras.landingPage",
+          "post": "</font>"
+        }
+      ],
+      [
+        {
+          "pre": "<b>archive center:</b> <font color='blue'>",
+          "field": "archive_center",
+          "post": "</font>"
+        }
+      ],
+      [
+        {
+          "pre": "<b>data center:</b> <font color='blue'>",
+          "field": "data_center",
+          "post": "</font>"
+        }
+      ],
+      [
+        {
+          "pre": "<b>short name:</b> <font color='blue'>",
+          "field": "short_name",
+          "post": "</font>"
+        }
+      ],
+      [
+        {
+          "pre": "<b>dataset ID:</b> <font color='blue'>",
+          "field": "dataset_id",
+          "post": "</font>"
+        }
+      ],
+      [
+        {
+          "pre": "<b>processing level:</b> <font color='blue'>",
+          "field": "processing_level_id",
           "post": "</font>"
         }
       ],

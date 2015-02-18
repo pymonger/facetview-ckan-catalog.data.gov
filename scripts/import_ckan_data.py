@@ -118,7 +118,7 @@ def index_group_datasets(ckan_url, es_url, index, group):
                       }
           
                   # index
-                  try: conn.index(res, index, 'climate.data.gov', res['id'])
+                  try: conn.index(res, index, 'data.gov', res['id'])
                   except Exception, e:
                       print("Got error: %s" % str(e))
                       errors[res['id']] = res

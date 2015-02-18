@@ -145,6 +145,7 @@ jQuery(document).ready(function($) {
     search_index: 'elasticsearch',
     facets: [
         {'field':'_type', 'display': 'source'},
+        {'field':'groups.title', 'display': 'groups'},
         {'field':'tags.name.raw', 'display': 'tag'},
         {'field':'title.raw', 'display': 'title'},
         {'field':'extras.theme.raw', 'display': 'theme'},
